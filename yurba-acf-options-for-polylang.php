@@ -3,7 +3,7 @@
  * Plugin Name:       Yurba ACF Options for Polylang
  * Plugin URI:        https://github.com/Yurba-Studio/yurba-acf-options-for-polylang
  * Description:       Per-language ACF options pages for Polylang, with a per-field choice of what is translated, what falls back to the default language and what is shared by all languages. A drop-in replacement for "ACF Options for Polylang" by Be API.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Yurba Studio
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YAOFP_VERSION', '1.0.0' );
+define( 'YAOFP_VERSION', '1.0.1' );
 define( 'YAOFP_FILE', __FILE__ );
 define( 'YAOFP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YAOFP_URL', plugin_dir_url( __FILE__ ) );

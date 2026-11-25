@@ -4,7 +4,7 @@ Tags: acf, polylang, options page, multilingual, translation
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -40,6 +40,7 @@ An empty translated field falls back to the default language, then to the "All l
 
 * `yaofp_get_field_in( $selector, $lang )` - value in a given language.
 * `yaofp_switch_to_untranslated()` / `yaofp_restore_current_lang()` - read the "All languages" values.
+* `yaofp_copy_to_shared( $field )` / `yaofp_copy_group_to_shared( $group_key )` - after switching fields to Synchronize, copy the default language's values into the shared storage.
 * `'yaofp' => false` in `acf_add_options_page()` - keep a page the same in every language.
 * `'yaofp_mode' => 'shared'` in `acf_add_options_page()` - default mode for that page.
 * Filters: `yaofp/field_mode`, `yaofp/default_mode`, `yaofp/option_pages`, `yaofp/fallback_enabled`, `yaofp/fallback_post_ids`, `yaofp/translate_ids`, `yaofp/lang_attribute`.
@@ -55,6 +56,9 @@ Deactivate it and activate this plugin. The data stays where it is. The two plug
 Repeaters use their own rows in every language (it always showed the "All languages" rows). Empty values fall back to the default language first. Options pages are matched exactly by post ID, and every language is recognised in a post ID.
 
 == Changelog ==
+
+= 1.0.1 =
+* `yaofp_copy_to_shared()` and `yaofp_copy_group_to_shared()`: copy the default language's values into the shared storage after switching fields to Synchronize.
 
 = 1.0.0 =
 * First release, compatible with the data of ACF Options for Polylang 2.0.0 by Be API.

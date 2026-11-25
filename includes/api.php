@@ -56,6 +56,64 @@ function yaofp_get_field_in( $selector, $lang, $post_id = 'options', $format = t
 	return get_field( $selector, yaofp_post_id( $base, $lang ), $format );
 }
 
+/**
+ * Copies a field's value from one language into the shared ("All languages") storage.
+ *
+ * Use it once after switching a field to Synchronize: until then the field shows the shared value,
+ * which may be empty or older than the per-language ones.
+ *
+ * @param string|array $field     Field key, name or array.
+ * @param string       $post_id   Options page post ID, 'options' by default.
+ * @param string       $from_lang Language to copy from; the default language when empty.
+ * @return bool Whether a value was copied.
+ */
+function yaofp_copy_to_shared( $field, $post_id = 'options', $from_lang = '' ) {
+	if ( ! is_array( $field ) ) {
+		$field = acf_get_field( $field );
+	}
+
+	$split = yaofp_split_post_id( $post_id );
+	$base  = $split ? $split['base'] : $post_id;
+	$lang  = $from_lang ? $from_lang : yaofp_default_lang();
+
+	if ( ! $field || ! $lang ) {
+		return false;
+	}
+
+	$value = yaofp_raw_value( yaofp_post_id( $base, $lang ), $field );
+	if ( yaofp_is_empty_value( $value, $field ) ) {
+		return false;
+	}
+
+	yaofp_busy( true );
+	acf_update_value( $value, $base, $field );
+	yaofp_busy( false );
+
+	return true;
+}
+
+/**
+ * Copies every Synchronize field of a field group from one language into the shared storage.
+ *
+ * @param string $group_key Field group key.
+ * @param string $post_id   Options page post ID, 'options' by default.
+ * @param string $from_lang Language to copy from; the default language when empty.
+ * @return string[] Names of the copied fields.
+ */
+function yaofp_copy_group_to_shared( $group_key, $post_id = 'options', $from_lang = '' ) {
+	$split  = yaofp_split_post_id( $post_id );
+	$base   = $split ? $split['base'] : $post_id;
+	$copied = [];
+
+	foreach ( (array) acf_get_fields( $group_key ) as $field ) {
+		if ( YAOFP_MODE_SHARED === yaofp_field_mode( $field, $base ) && yaofp_copy_to_shared( $field, $base, $from_lang ) ) {
+			$copied[] = $field['name'];
+		}
+	}
+
+	return $copied;
+}
+
 // Drop-in compatibility with "ACF Options for Polylang" by Be API.
 if ( ! function_exists( 'bea_aofp_switch_to_untranslated' ) ) {
 	function bea_aofp_switch_to_untranslated() {

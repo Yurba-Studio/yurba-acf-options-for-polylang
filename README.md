@@ -86,6 +86,20 @@ yaofp_restore_current_lang();
 $mode = yaofp_get_field_mode( 'footer_title' );
 ```
 
+### Switching a field to Synchronize
+
+A synchronized field reads the *All languages* storage. If it already holds an older value, copy the default language's value into it once:
+
+```php
+// One field.
+yaofp_copy_to_shared( 'logo', 'options' );
+
+// Every synchronized field of a field group, e.g. in a one-time migration.
+yaofp_copy_group_to_shared( 'group_theme_settings', 'options' );
+```
+
+While the *All languages* storage is empty, a synchronized field shows the default language's value anyway.
+
 `bea_aofp_switch_to_untranslated()` and `bea_aofp_restore_current_lang()` from the original plugin keep working.
 
 ### Filters
@@ -125,7 +139,3 @@ The values stay where they are: `options_{locale}` / `{post_id}_{locale}` for ea
 - `acf/pre_load_value` sends synchronized fields to the unsuffixed ID and loads the fallback for empty translated fields.
 - `acf/pre_update_value` / `acf/pre_delete_value` save synchronized fields once, to the unsuffixed ID.
 - `acf/load_reference` finds the field key in the default language when a language was never saved.
-
----
-
-License: MIT
